@@ -1,3 +1,4 @@
+import Link from "next/link";
 export default function Register() {
     return (
       <div className="w-full h-screen flex justify-center items-center px-4 sm:px-6 md:px-8 lg:px-16">
@@ -96,7 +97,7 @@ export default function Register() {
           </form>
   
           <div className="text-center text-sm sm:text-base lg:text-lg font-serif">
-            ALready joined? <span className="font-lilita hover:underline cursor-pointer">Login here</span>
+            ALready joined? <span className="font-lilita hover:underline cursor-pointer"><Link href='/login'>Login here</Link></span>
           </div>
         </div>
       </div>
