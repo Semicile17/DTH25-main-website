@@ -28,13 +28,12 @@ export default async function handler(req, res) {
     // Generate JWT token with user info
     const token = jwt.sign(
       { 
-        userId: user._id, 
         email: user.email,
-        fullName: user.fullName, // Include any other user info you need
-        participantId: user.participantId,
+        fullName: user.fullName, 
+        participantId: user._id,
         teamId: user.teamId
       },
-      process.env.JWT_SECRET, // Use a strong secret key in your .env file
+      process.env.JWT_SECRET, 
       { expiresIn: '1h' }
     );
 

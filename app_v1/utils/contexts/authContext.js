@@ -10,16 +10,19 @@ export function AuthProvider({ children }) {
 
   // Check if the user is logged in by looking at cookies
   useEffect(() => {
-    const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+    const token = localStorage.getItem('token'); 
+    console.log(token)
 
     if (token) {
       // Extract token (you can also use JWT decoding to get user data if needed)
-      const decodedToken = JSON.parse(atob(token.split('=')[1].split('.')[1])); // Decode JWT token
+      const parts = token.split('.');
+      const header = JSON.parse(atob(parts[0])); // Decode header
+      const payload = JSON.parse(atob(parts[1])); // Decode payload// Decode JWT token
       setUser({
-        fullName: decodedToken.fullName,
-        email: decodedToken.email,
-        participantId: decodedToken.participantId,
-        teamId: decodedToken.teamId
+        fullName: payload.fullName,
+        email: payload.email,
+        participantId: payload.participantId,
+        teamId: payload.teamId
       });
       setIsLoggedIn(true);
     } else {

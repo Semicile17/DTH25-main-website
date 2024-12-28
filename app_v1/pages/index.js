@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
-
-
+import { useAuth } from "@/utils/contexts/authContext";
+import Header from "@/components/header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,10 +15,11 @@ const geistMono = Geist_Mono({
 
 export default function Home() {
   const router = useRouter();
+  const { isLoggedIn } = useAuth();
 
   return (
-    
-
+    <>
+      {isLoggedIn && <Header />}
       <div className="h-screen w-full flex justify-center items-center">
         <div className="flex flex-col font-lilita">
           <p className=" text-[12px] md:text-lg text-white">Welcome to the</p>
@@ -27,17 +28,19 @@ export default function Home() {
           </h1>
           <p className="text-right text-[12px] md:text-lg text-white">2025</p>
           <div className="flex justify-center">
-            <button
-              onClick={() => {
-                router.push("/register");
-              }}
-              className="m-10 bg-gradient-to-r from-blue-300 to-blue-600 md:w-56 w-44 h-12  text-white font-bold rounded-xl md:text-xl"
-            >
-              Join the hunt
-            </button>
+            {!isLoggedIn && (
+              <button
+                onClick={() => {
+                  router.push("/register");
+                }}
+                className="m-10 bg-gradient-to-r from-blue-300 to-blue-600 md:w-56 w-44 h-12  text-white font-bold rounded-xl md:text-xl"
+              >
+                Join the hunt
+              </button>
+            )}
           </div>
         </div>
       </div>
-     
+    </>
   );
 }

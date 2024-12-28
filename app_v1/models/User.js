@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
 
+
 const UserSchema = new mongoose.Schema(
   {
-    instituteId: { type: String, required: true },
-    teamId: { type: String, required: false},
+    instituteId: { type: String, required: true ,unique: true},
+    teamId: { type: String, required: false , unique: true},
     fullName: { type: String, required: true },
     branch: { type: String, required: true },
     year: { type: String, required: true },
@@ -11,11 +12,11 @@ const UserSchema = new mongoose.Schema(
     password: { type: String, required: true },
     puzzlesSolved: { type: Number, default: 0 }, // Tracks the total number of puzzles solved
 
-    // Puzzle statuses (enum: "failed" or "completed")
-    puzzle1Status: { type: String, enum: ['failed', 'completed'], default: 'failed' },
-    puzzle2Status: { type: String, enum: ['failed', 'completed'], default: 'failed' },
-    puzzle3Status: { type: String, enum: ['failed', 'completed'], default: 'failed' },
-    puzzle4Status: { type: String, enum: ['failed', 'completed'], default: 'failed' },
+    // Puzzle statuses 
+    puzzle1Status: { type: String, enum: ['started','failed', 'completed'], default: 'failed' },
+    puzzle2Status: { type: String, enum: ['started', 'failed','completed'], default: 'failed' },
+    puzzle3Status: { type: String, enum: ['started', 'failed','completed'], default: 'failed' },
+    puzzle4Status: { type: String, enum: ['started','failed', 'completed'], default: 'failed' },
 
     // Time taken for each puzzle in seconds
     puzzle1Time: { type: Number, default: 0 }, // Time in seconds

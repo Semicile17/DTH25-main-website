@@ -2,19 +2,22 @@ import { useState ,useEffect} from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/utils/contexts/authContext';
+import { BeatLoader } from 'react-spinners';
 
 export default function Login() {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
   const router = useRouter();
-  const { setIsLoggedIn, setUser , isLoggedIn} = useAuth();
-
+  const [loading , setLoading] = useState(false);
+  const { setIsLoggedIn, setUser , user , isLoggedIn} = useAuth();
+  console.log(user)
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setError('');
 
     try {
@@ -31,21 +34,22 @@ export default function Login() {
 
         // Update AuthContext
         setIsLoggedIn(true);
-        console.log(isLoggedIn)
-        console.log("Hello")
         setUser({
           email: data.user.email,
           fullName: data.user.fullName,
           participantId: data.user.participantId,
           teamId: data.user.teamId,
         });
+        console.log(user)
 
         // Redirect to profile page
-        // router.push('/profile');
+        router.push('/profile');
       } else {
         setError(data.error || 'Login failed');
       }
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       setError('An error occurred during login.');
     }
   };
@@ -83,7 +87,7 @@ export default function Login() {
           <input
             id="email"
             type="email"
-            placeholder="semicile17@gmail.com"
+            placeholder="Enter your email"
             value={formData.email}
             onChange={handleChange}
             className="bg-gray-200 text-black px-3 py-2 rounded-lg border-2 border-blue-500 outline-none focus:ring-2 focus:ring-blue-400"
@@ -105,9 +109,12 @@ export default function Login() {
           {/* Login Button */}
           <button
             type="submit"
-            className="bg-gradient-to-r from-blue-300 to-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex justify-center items-center bg-gradient-to-r from-blue-300 to-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Login
+          {
+            loading ? (<BeatLoader size={8} color='white'/>):("Login")
+          }
+        
           </button>
         </form>
 

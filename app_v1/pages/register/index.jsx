@@ -1,19 +1,21 @@
-import { useState , useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/utils/contexts/authContext';
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/utils/contexts/authContext";
+import { BeatLoader } from "react-spinners";
 
 export default function Register() {
   const [formData, setFormData] = useState({
-    instituteId: '',
-    fullName: '',
-    branch: '',
-    year: '',
-    email: '',
+    instituteId: "",
+    fullName: "",
+    branch: "",
+    year: "",
+    email: "",
   });
-  const [error, setError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
+  const [error, setError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
@@ -21,36 +23,39 @@ export default function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
-    setSuccessMessage('');
+    setLoading(true);
+    setError("");
+    setSuccessMessage("");
 
     try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
       if (res.ok) {
-        setSuccessMessage('Registration successful! Redirecting to login...');
+        setSuccessMessage("Registration successful! Redirecting to login...");
         setTimeout(() => {
-          router.push('/login');
+          router.push("/login");
         }, 2000);
       } else {
-        setError(data.error || 'Registration failed');
+        setError(data.error || "Registration failed");
       }
+      setLoading(false);
     } catch (err) {
-      setError('An error occurred during registration.');
+      setLoading(false);
+      setError("An error occurred during registration.");
     }
   };
 
-  const {isLoggedIn } = useAuth();
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     if (isLoggedIn) {
       // Perform the redirect only on the client side
-      window.location.href = '/profile';
+      window.location.href = "/profile";
     }
   }, [isLoggedIn]); // Re-run when isLoggedIn changes
 
@@ -74,7 +79,9 @@ export default function Register() {
           className="flex flex-col md:gap-6 gap-3 bg-blue-300/15 text-white p-6 rounded-md font-lilita"
         >
           {error && <p className="text-red-500 text-center">{error}</p>}
-          {successMessage && <p className="text-green-500 text-center">{successMessage}</p>}
+          {successMessage && (
+            <p className="text-green-500 text-center">{successMessage}</p>
+          )}
 
           {/* Institute ID */}
           <label htmlFor="instituteId" className="text-sm font-bold">
@@ -171,12 +178,12 @@ export default function Register() {
             type="submit"
             className="bg-gradient-to-r from-blue-300 to-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
           >
-            Register
+            {loading ? <BeatLoader size={8} color="white" /> : "Register"}
           </button>
         </form>
 
         <div className="text-center text-sm sm:text-base lg:text-lg font-serif">
-          Already registered?{' '}
+          Already registered?{" "}
           <span className="font-lilita hover:underline cursor-pointer">
             <Link href="/login">Login here</Link>
           </span>
