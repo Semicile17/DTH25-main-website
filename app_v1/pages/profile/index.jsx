@@ -1,13 +1,23 @@
 import { useEffect } from "react";
 import { useAuth } from "@/utils/contexts/authContext";
 import Header from "@/components/header";
+import { useRouter } from "next/router";
 
 export default function Profile() {
   const { user, isLoggedIn } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = ()=>{
+        // Remove token from localStorage
+        localStorage.removeItem("token");
+
+        // Redirect to /home
+        router.push("/");
+  }
   useEffect(() => {
     if (!isLoggedIn) {
       // Perform the redirect only on the client side
-      // window.location.href = '/login';
+      window.location.href = '/login';
     }
   }, [isLoggedIn]); // Re-run when isLoggedIn changes
 
@@ -52,7 +62,13 @@ export default function Profile() {
           <button className="bg-gradient-to-r from-blue-300 to-blue-600 text-white font-bold rounded-lg w-36 h-10 lg:w-44 lg:h-12">
             Make a team
           </button>
+          <button
+          onClick={handleLogout}
+           className="bg-gradient-to-r from-red-200 to-red-500 w-36 h-10 lg:w-44 lg:h-12 rounded-lg">
+            Logout
+          </button>
         </div>
+
       </div>
     </>
   );
