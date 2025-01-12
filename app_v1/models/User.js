@@ -13,10 +13,10 @@ const UserSchema = new mongoose.Schema(
     puzzlesSolved: { type: Number, default: 0 }, // Tracks the total number of puzzles solved
 
     // Puzzle statuses 
-    puzzle1Status: { type: String, enum: ['started','failed', 'completed'], default: 'failed' },
-    puzzle2Status: { type: String, enum: ['started', 'failed','completed'], default: 'failed' },
-    puzzle3Status: { type: String, enum: ['started', 'failed','completed'], default: 'failed' },
-    puzzle4Status: { type: String, enum: ['started','failed', 'completed'], default: 'failed' },
+    puzzle1Status: { type: String, enum: ['started','progressing','failed', 'completed'], default: 'failed' },
+    puzzle2Status: { type: String, enum: ['started','progressing', 'failed','completed'], default: 'failed' },
+    puzzle3Status: { type: String, enum: ['started','progressing', 'failed','completed'], default: 'failed' },
+    puzzle4Status: { type: String, enum: ['started','progressing','failed', 'completed'], default: 'failed' },
 
     // Time taken for each puzzle in seconds
     puzzle1Time: { type: Number, default: 0 }, // Time in seconds

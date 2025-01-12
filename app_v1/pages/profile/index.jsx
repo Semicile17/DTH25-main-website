@@ -6,11 +6,12 @@ import { useRouter } from "next/router";
 export default function Profile() {
   const { user, isLoggedIn } = useAuth();
   const router = useRouter();
+ 
 
   const handleLogout = ()=>{
         // Remove token from localStorage
         localStorage.removeItem("token");
-
+        isLoggedIn(false)
         // Redirect to /home
         router.push("/");
   }
@@ -19,7 +20,7 @@ export default function Profile() {
       // Perform the redirect only on the client side
       window.location.href = '/login';
     }
-  }, [isLoggedIn]); // Re-run when isLoggedIn changes
+  }, []); // Re-run when isLoggedIn changes
 
   if (!isLoggedIn) {
     // return null; // Optionally render nothing until the redirect happens
