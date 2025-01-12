@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 const UserSchema = new mongoose.Schema(
   {
     instituteId: { type: String, required: true ,unique: true},
-    teamId: { type: String, required: false , unique: true},
+
     fullName: { type: String, required: true },
     branch: { type: String, required: true },
     year: { type: String, required: true },
